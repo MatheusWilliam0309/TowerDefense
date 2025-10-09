@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #00e5ff; /* Ciano Neon */
+    --secondary-color: #ff00ff; /* Magenta Neon */
+    --dark-bg: #0d0c1d;
+    --panel-bg: #161530; /* Um pouco mais sólido */
+    --border-color: rgba(0, 229, 255, 0.5);
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: #e0e0e0;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- Container Principal Lado a Lado --- */
+#game-container {
+    display: flex; /* Mágica do alinhamento acontece aqui! */
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color);
+    background-color: black;
+}
+
+#gameCanvas {
+    background-color: #16213e;
+    display: block;
+}
+
+h1 {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* --- Painel de UI Lateral --- */
+#ui-panel {
+    width: 280px;
+    background-color: var(--panel-bg);
+    border-left: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui os itens verticalmente */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Seção de Status (Recursos, Vidas, etc.) */
+#stats-bar {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.stat-item h3 {
+    margin: 0;
+    font-size: 1em;
+    color: var(--primary-color);
+    font-weight: normal;
+}
+.stat-item p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Seção da Loja de Torres */
+#tower-shop h4 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+#tower-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Cria um grid 2x2 */
+    gap: 10px;
+}
+.tower-button {
+    padding: 15px 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #e0e0e0;
+    font-family: inherit;
+}
+.tower-button:hover {
+    background-color: var(--primary-color);
+    color: black;
+    transform: scale(1.05);
+}
+.tower-button.selected {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: black;
+    transform: scale(1.05);
+}
+
+/* Seção de Ações (Upgrade, Iniciar Onda) */
+#action-panel {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+#upgrade-panel {
+    text-align: center;
+    margin-bottom: 15px;
+}
+#upgrade-panel h3 { margin-top: 0; color: var(--primary-color); }
+#upgrade-panel p { margin: 0 0 10px 0; }
+#upgrade-btn, #start-wave-btn, #restart-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-family: inherit;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#upgrade-btn:hover, #start-wave-btn:hover, #restart-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+#start-wave-btn:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.hidden { display: none !important; }
+
+/* Tela de Fim de Jogo */
+#game-over-screen {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 100;
+}
+#game-over-box {
+    background-color: var(--panel-bg);
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 20px var(--secondary-color);
+    padding: 40px; text-align: center;
+}

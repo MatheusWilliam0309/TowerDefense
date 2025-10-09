@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defensor da Rede: Interface Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-wrapper">
+        <h1>Defensor da Rede</h1>
+        
+        <div id="game-container">
+            <canvas id="gameCanvas" width="1120" height="700"></canvas>
+            
+            <div id="ui-panel">
+                <div id="stats-bar">
+                    <div class="stat-item">
+                        <h3>Recursos</h3>
+                        <p id="resources">120 💰</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Pontos</h3>
+                        <p id="score">0 ⭐</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Integridade</h3>
+                        <p id="lives">20/20 ❤️</p>
+                    </div>
+                     <div class="stat-item">
+                        <h3>Nível/Onda</h3>
+                        <p><span id="level">1</span> / <span id="wave">1</span> 🌊</p>
+                    </div>
+                </div>
+
+                <div id="tower-shop">
+                    <h4>EQUIPAMENTOS</h4>
+                    <div id="tower-grid">
+                        <button class="tower-button" data-tower-type="Firewall" title="Firewall (Custo: 40)">🛡️ Firewall</button>
+                        <button class="tower-button" data-tower-type="Router" title="Roteador (Custo: 30)">⚡ Roteador</button>
+                        <button class="tower-button" data-tower-type="Antivirus" title="Antivírus (Custo: 50)">❄️ Antivírus</button>
+                        <button class="tower-button" data-tower-type="Criptografador" title="Criptografador (Custo: 60)">🔒 Cripto</button>
+                    </div>
+                </div>
+
+                <div id="action-panel">
+                    <div id="upgrade-panel" class="hidden">
+                        <h3>UPGRADE</h3>
+                        <p>Torre Nv. <span id="tower-level">1</span></p>
+                        <button id="upgrade-btn">Melhorar</button>
+                    </div>
+                    <button id="start-wave-btn">▶ INICIAR ONDA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-screen" class="hidden">
+        <div id="game-over-box">
+            <h2 id="game-over-title">Fim de Jogo</h2>
+            <p id="game-over-message">Os vírus sobrecarregaram a rede.</p>
+            <button id="restart-btn">Jogar Novamente</button>
+        </div>
+    </div>
+    <audio id="sound-place" src="https://cdn.freesound.org/previews/266164/266164_4945417-lq.mp3" preload="auto"></audio>
+    <audio id="sound-shoot" src="https://cdn.freesound.org/previews/514244/514244_11157384-lq.mp3" preload="auto"></audio>
+    <audio id="sound-hit" src="https://www.myinstants.com/media/sounds/hitmarker_2.mp3" preload="auto"></audio>
+    <audio id="sound-gameover" src="https://cdn.freesound.org/previews/277403/277403_5123851-lq.mp3" preload="auto"></audio>
+    <audio id="sound-corrupt" src="https://cdn.freesound.org/previews/418529/418529_8254238-lq.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
