@@ -27,9 +27,8 @@ body {
     align-items: center;
 }
 
-/* --- Container Principal Lado a Lado --- */
 #game-container {
-    display: flex; /* Mágica do alinhamento acontece aqui! */
+    display: flex;
     border: 2px solid var(--primary-color);
     box-shadow: 0 0 20px var(--primary-color);
     background-color: black;
@@ -46,19 +45,17 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* --- Painel de UI Lateral --- */
 #ui-panel {
     width: 280px;
     background-color: var(--panel-bg);
     border-left: 2px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Distribui os itens verticalmente */
+    justify-content: space-between;
     padding: 20px;
     box-sizing: border-box;
 }
 
-/* Seção de Status (Recursos, Vidas, etc.) */
 #stats-bar {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 15px;
@@ -75,95 +72,67 @@ h1 {
     color: var(--primary-color);
     font-weight: normal;
 }
-.stat-item p {
-    margin: 0;
-    font-size: 1.2em;
-    font-weight: bold;
-}
+.stat-item p { margin: 0; font-size: 1.2em; font-weight: bold; }
 
-/* Seção da Loja de Torres */
-#tower-shop h4 {
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-#tower-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Cria um grid 2x2 */
-    gap: 10px;
-}
+#tower-shop h4 { color: var(--primary-color); margin-bottom: 15px; }
+#tower-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .tower-button {
-    padding: 15px 5px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #e0e0e0;
-    font-family: inherit;
+    padding: 15px 5px; background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--border-color); border-radius: 8px;
+    font-size: 1em; cursor: pointer; transition: all 0.2s ease;
+    color: #e0e0e0; font-family: inherit;
 }
-.tower-button:hover {
-    background-color: var(--primary-color);
-    color: black;
-    transform: scale(1.05);
-}
+.tower-button:hover { background-color: var(--primary-color); color: black; transform: scale(1.05); }
 .tower-button.selected {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 15px var(--secondary-color);
-    background-color: var(--secondary-color);
-    color: black;
-    transform: scale(1.05);
+    border-color: var(--secondary-color); box-shadow: 0 0 15px var(--secondary-color);
+    background-color: var(--secondary-color); color: black; transform: scale(1.05);
 }
 
-/* Seção de Ações (Upgrade, Iniciar Onda) */
-#action-panel {
-    border-top: 1px solid var(--border-color);
-    padding-top: 15px;
-}
-#upgrade-panel {
-    text-align: center;
-    margin-bottom: 15px;
-}
+#action-panel { border-top: 1px solid var(--border-color); padding-top: 15px; }
+#upgrade-panel { text-align: center; margin-bottom: 15px; }
 #upgrade-panel h3 { margin-top: 0; color: var(--primary-color); }
 #upgrade-panel p { margin: 0 0 10px 0; }
-#upgrade-btn, #start-wave-btn, #restart-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    font-family: inherit;
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
+#upgrade-btn, #start-wave-btn, #restart-btn, .modal-buttons button {
+    width: 100%; padding: 12px; background-color: transparent;
+    border: 2px solid var(--primary-color); color: var(--primary-color);
+    font-family: inherit; font-size: 1.1em; font-weight: bold;
+    cursor: pointer; transition: all 0.3s ease;
 }
-#upgrade-btn:hover, #start-wave-btn:hover, #restart-btn:hover {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
+#upgrade-btn:hover, #start-wave-btn:hover, #restart-btn:hover, .modal-buttons button:hover {
+    background-color: var(--primary-color); color: var(--dark-bg);
     box-shadow: 0 0 15px var(--primary-color);
 }
 #start-wave-btn:disabled {
-    border-color: #555;
-    color: #555;
-    cursor: not-allowed;
-    background-color: transparent;
-    box-shadow: none;
+    border-color: #555; color: #555; cursor: not-allowed;
+    background-color: transparent; box-shadow: none;
 }
+
+#speed-controls { display: flex; gap: 5px; margin-bottom: 10px; }
+.speed-button {
+    flex-grow: 1; padding: 8px; font-family: inherit; font-size: 0.9em;
+    background-color: transparent; border: 1px solid var(--border-color);
+    color: var(--border-color); cursor: pointer; transition: all 0.2s;
+}
+.speed-button.active { background-color: var(--primary-color); color: var(--dark-bg); font-weight: bold; }
 
 .hidden { display: none !important; }
 
-/* Tela de Fim de Jogo */
-#game-over-screen {
+/* Telas de Início e Fim de Jogo */
+#start-screen, #game-over-screen {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.85);
     display: flex; justify-content: center; align-items: center;
     z-index: 100;
 }
-#game-over-box {
+.modal-box {
     background-color: var(--panel-bg);
-    border: 2px solid var(--secondary-color);
-    box-shadow: 0 0 20px var(--secondary-color);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color);
     padding: 40px; text-align: center;
+    max-width: 400px;
 }
+.modal-box h2 { color: var(--primary-color); }
+.modal-box p { margin-bottom: 30px; }
+.modal-box small { margin-top: 20px; display: block; opacity: 0.7; }
+.modal-buttons { display: flex; gap: 15px; }

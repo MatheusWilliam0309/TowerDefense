@@ -17,29 +17,29 @@
                 <div id="stats-bar">
                     <div class="stat-item">
                         <h3>Recursos</h3>
-                        <p id="resources">120 💰</p>
+                        <p id="resources">-- 💰</p>
                     </div>
                     <div class="stat-item">
                         <h3>Pontos</h3>
-                        <p id="score">0 ⭐</p>
+                        <p id="score">-- ⭐</p>
                     </div>
                     <div class="stat-item">
                         <h3>Integridade</h3>
-                        <p id="lives">20/20 ❤️</p>
+                        <p id="lives">--/-- ❤️</p>
                     </div>
                      <div class="stat-item">
                         <h3>Nível/Onda</h3>
-                        <p><span id="level">1</span> / <span id="wave">1</span> 🌊</p>
+                        <p><span id="level">--</span> / <span id="wave">--</span> 🌊</p>
                     </div>
                 </div>
 
                 <div id="tower-shop">
                     <h4>EQUIPAMENTOS</h4>
                     <div id="tower-grid">
-                        <button class="tower-button" data-tower-type="Firewall" title="Firewall (Custo: 40)">🛡️ Firewall</button>
-                        <button class="tower-button" data-tower-type="Router" title="Roteador (Custo: 30)">⚡ Roteador</button>
-                        <button class="tower-button" data-tower-type="Antivirus" title="Antivírus (Custo: 50)">❄️ Antivírus</button>
-                        <button class="tower-button" data-tower-type="Criptografador" title="Criptografador (Custo: 60)">🔒 Cripto</button>
+                        <button class="tower-button" data-tower-type="Firewall" title="Firewall (Custo: 40)&#10;Dispara projéteis de alto dano em ameaças. Eficaz contra todos os tipos de inimigos.">🛡️ Firewall</button>
+                        <button class="tower-button" data-tower-type="Router" title="Roteador (Custo: 30)&#10;Não ataca. Acelera pacotes de dados aliados que passam perto, aumentando sua pontuação mais rápido.">⚡ Roteador</button>
+                        <button class="tower-button" data-tower-type="Antivirus" title="Antivírus (Custo: 50)&#10;Não causa dano. Desacelera todas as ameaças em uma grande área, ideal para controle de multidões.">❄️ Antivírus</button>
+                        <button class="tower-button" data-tower-type="Criptografador" title="Criptografador (Custo: 60)&#10;Aplica um escudo protetor em pacotes de dados, defendendo-os de ataques de Corruptores.">🔒 Cripto</button>
                     </div>
                 </div>
 
@@ -49,19 +49,39 @@
                         <p>Torre Nv. <span id="tower-level">1</span></p>
                         <button id="upgrade-btn">Melhorar</button>
                     </div>
-                    <button id="start-wave-btn">▶ INICIAR ONDA</button>
+
+                    <div id="speed-controls">
+                        <button class="speed-button active" data-speed="1">1x</button>
+                        <button class="speed-button" data-speed="0.75">0.75x</button>
+                        <button class="speed-button" data-speed="0.5">0.5x</button>
+                    </div>
+
+                    <button id="start-wave-btn" disabled>▶ INICIAR ONDA</button>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div id="start-screen">
+        <div class="modal-box">
+            <h2>Escolha o Modo de Jogo</h2>
+            <p>Selecione como você quer defender a rede.</p>
+            <div class="modal-buttons">
+                <button id="start-normal">Modo Normal</button>
+                <button id="start-aprendiz">Modo Aprendiz</button>
+            </div>
+            <small>Modo Aprendiz: Inimigos mais lentos e mais recursos iniciais.</small>
+        </div>
+    </div>
 
     <div id="game-over-screen" class="hidden">
-        <div id="game-over-box">
+        <div class="modal-box">
             <h2 id="game-over-title">Fim de Jogo</h2>
             <p id="game-over-message">Os vírus sobrecarregaram a rede.</p>
             <button id="restart-btn">Jogar Novamente</button>
         </div>
     </div>
+    
     <audio id="sound-place" src="https://cdn.freesound.org/previews/266164/266164_4945417-lq.mp3" preload="auto"></audio>
     <audio id="sound-shoot" src="https://cdn.freesound.org/previews/514244/514244_11157384-lq.mp3" preload="auto"></audio>
     <audio id="sound-hit" src="https://www.myinstants.com/media/sounds/hitmarker_2.mp3" preload="auto"></audio>
