@@ -1,179 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Defensor da Rede</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defensor da Rede</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-wrapper">
-        <h1>Defensor da Rede</h1>
-        
-        <div id="game-container">
-            <canvas id="gameCanvas" width="1120" height="700"></canvas>
-            
-            <div id="ui-panel">
-                <div id="stats-bar">
-                    <div class="stat-item">
-                        <h3>Recursos</h3>
-                        <p id="resources">-- 💰</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Pontos</h3>
-                        <p id="score">-- ⭐</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Integridade</h3>
-                        <p id="lives">--/-- ❤️</p>
-                     </div>
-                     <div class="stat-item">
-                        <h3>Nível/Onda</h3>
-                        <p><span id="level">--</span> / <span id="wave">--</span> 🌊</p>
-                    </div>
-                </div>
+    <div id="game-wrapper">
+        <h1>Defensor da Rede</h1>
+        
+        <div id="game-container">
+            <canvas id="gameCanvas" width="1120" height="700"></canvas>
+            
+            <div id="ui-panel">
+                <div id="stats-bar">
+                    <div class="stat-item">
+                        <h3>Recursos</h3>
+                        <p id="resources">-- 💰</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Pontos</h3>
+                        <p id="score">-- ⭐</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Integridade</h3>
+                        <p id="lives">--/-- ❤️</p>
+                     </div>
+                     <div class="stat-item">
+                        <h3>Nível/Onda</h3>
+                        <p><span id="level">--</span> / <span id="wave">--</span> 🌊</p>
+                    </div>
+                </div>
 
-                <div id="tower-shop">
-                    <h4>EQUIPAMENTOS</h4>
-                    <div id="tower-grid">
-                        <button class="tower-button" data-tower-type="Firewall" data-tooltip-id="tooltip-firewall">🛡️ Firewall</button>
-                        <button class="tower-button" data-tower-type="Router" data-tooltip-id="tooltip-router">⚡ Roteador</button>
-                        <button class="tower-button" data-tower-type="Antivirus" data-tooltip-id="tooltip-antivirus">❄️ Antivírus</button>
-                        <button class="tower-button" data-tower-type="Criptografador" data-tooltip-id="tooltip-criptografador">🔒 Cripto</button>
-                    </div>
-                    
-                    <div id="custom-tooltips-container">
-                        <div id="tooltip-firewall" class="custom-tooltip">
-                            <h4>Firewall</h4>
-                            <p><span class="tooltip-cost">Custo: 40</span></p>
-                            <p>Dispara projéteis de alto dano em ameaças. Eficaz contra todos os tipos de inimigos.</p>
-                            <p><span class="tooltip-stats">Dano: 10, Velocidade de Ataque: 60, Alcance: 120</span></p>
-                        </div>
-                        <div id="tooltip-router" class="custom-tooltip">
-                            <h4>Roteador</h4>
-                            <p><span class="tooltip-cost">Custo: 30</span></p>
-                            <p>Não ataca. Acelera pacotes de dados aliados que passam perto, aumentando sua pontuação mais rápido.</p>
-                            <p><span class="tooltip-stats">Alcance: 90, Bônus de Velocidade: 50%</span></p>
-                        </div>
-                        <div id="tooltip-antivirus" class="custom-tooltip">
-                            <h4>Antivírus</h4>
-                            <p><span class="tooltip-cost">Custo: 50</span></p>
-                            <p>Não causa dano. Desacelera todas as ameaças em uma grande área, ideal para controle de multidões.</p>
-                            <p><span class="tooltip-stats">Alcance: 100, Penalidade de Velocidade: 40%</span></p>
-                        </div>
-                        <div id="tooltip-criptografador" class="custom-tooltip">
-                            <h4>Criptografador</h4>
-                            <p><span class="tooltip-cost">Custo: 60</span></p>
-                            <p>Aplica um escudo protetor em pacotes de dados, defendendo-os de ataques de Corruptores.</p>
-                            <p><span class="tooltip-stats">Alcance: 110</span></p>
-                        </div>
-                    </div>
-                </div>
+                <div id="tower-shop">
+                    <h4>EQUIPAMENTOS</h4>
+                    <div id="tower-grid">
+                        <button class="tower-button" data-tower-type="Firewall" data-tooltip-id="tooltip-firewall">🛡️ Firewall</button>
+                        <button class="tower-button" data-tower-type="Router" data-tooltip-id="tooltip-router">⚡ Roteador</button>
+                        <button class="tower-button" data-tower-type="Antivirus" data-tooltip-id="tooltip-antivirus">❄️ Antivírus</button>
+                        <button class="tower-button" data-tower-type="Criptografador" data-tooltip-id="tooltip-criptografador">🔒 Cripto</button>
+                    </div>
+                    
+                    <div id="custom-tooltips-container">
+                        <div id="tooltip-firewall" class="custom-tooltip">
+                            <h4>Firewall</h4>
+                            <p><span class="tooltip-cost">Custo: 40</span></p>
+                            <p>Dispara projéteis de alto dano em ameaças. Eficaz contra todos os tipos de inimigos.</p>
+                            <p><span class="tooltip-stats">Dano: 10, Velocidade de Ataque: 60, Alcance: 120</span></p>
+                        </div>
+                        <div id="tooltip-router" class="custom-tooltip">
+                            <h4>Roteador</h4>
+                            <p><span class="tooltip-cost">Custo: 30</span></p>
+                            <p>Não ataca. Acelera pacotes de dados aliados que passam perto, aumentando sua pontuação mais rápido.</p>
+                            <p><span class="tooltip-stats">Alcance: 90, Bônus de Velocidade: 50%</span></p>
+                        </div>
+                        <div id="tooltip-antivirus" class="custom-tooltip">
+                            <h4>Antivírus</h4>
+                            <p><span class="tooltip-cost">Custo: 50</span></p>
+                            <p>Não causa dano. Desacelera todas as ameaças em uma grande área, ideal para controle de multidões.</p>
+                            <p><span class="tooltip-stats">Alcance: 100, Penalidade de Velocidade: 40%</span></p>
+                        </div>
+                        <div id="tooltip-criptografador" class="custom-tooltip">
+                            <h4>Criptografador</h4>
+                            <p><span class="tooltip-cost">Custo: 60</span></p>
+                            <p>Aplica um escudo protetor em pacotes de dados, defendendo-os de ataques de Corruptores.</p>
+                            <p><span class="tooltip-stats">Alcance: 110</span></p>
+                        </div>
+                    </div>
+                </div>
 
-                <div id="action-panel">
-                    <div id="speed-controls">
-                        <button class="speed-button active" data-speed="1">1x</button>
-                        <button class="speed-button" data-speed="0.75">0.75x</button>
-                        <button class="speed-button" data-speed="0.5">0.5x</button>
-                    </div>
-                    
-                    <div id="pause-controls">
-                        <button id="pause-btn">PAUSAR (P)</button>
-                        <button id="back-to-menu-btn" class="hidden">Voltar ao Menu</button>
-                    </div>
+                <div id="action-panel">
+                    
+                                                                                                    <div id="speed-select-wrapper">
+                        <button id="speed-toggle-btn">Velocidade: 1x (Normal)</button>
+                        <div id="speed-options" class="hidden">
+                            <button class="speed-option" data-speed="2">2x</button>
+                            <button class="speed-option" data-speed="1.5">1.5x</button>
+                            <button class="speed-option active" data-speed="1">1x (Normal)</button>
+                            <button class="speed-option" data-speed="0.75">0.75x</button>
+                            <button class="speed-option" data-speed="0.5">0.5x</button>
+                        </div>
+                    </div>
+                                        
+                    <div id="pause-controls">
+                        <button id="pause-btn">PAUSAR (P)</button>
+                        <button id="back-to-menu-btn" class="hidden">Voltar ao Menu</button>
+                    </div>
 
-                    <button id="start-wave-btn" disabled>▶ INICIAR ONDA</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div id="main-menu-screen" class="modal-overlay">
-        <div class="modal-box">
-            <h2>Bem-vindo ao Defensor da Rede</h2>
-            <div class="modal-buttons vertical">
-                <button id="menu-play-btn">Jogar</button>
-                <button id="menu-how-to-play-btn">Como Jogar</button>
-            </div>
-            <div class="accessibility-toggle">
-                <label for="accessibility-toggle">Modo Acessibilidade</label>
-                <label class="switch">
-                    <input type="checkbox" id="accessibility-toggle">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <small>Ativa controles via teclado e formas distintas para inimigos.</small>
-        </div>
-    </div>
-    
-    <div id="mode-select-screen" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h2>Escolha o Modo de Jogo</h2>
-            <p>Selecione como você quer defender a rede.</p>
-            <div class="modal-buttons">
-                <button id="start-normal">Modo Normal</button>
-                <button id="start-aprendiz">Modo Aprendiz</button>
-            </div>
-            <small>Modo Aprendiz: Inimigos 25% mais lentos e 80 recursos iniciais extras.</small>
-        </div>
-    </div>
-    
-    <div id="how-to-play-screen" class="modal-overlay hidden">
-        <div class="modal-box how-to-play">
-            <h2>Como Jogar</h2>
-            <div class="how-to-play-content">
-                <h3>O Jogo</h3>
-                <p>Seu objetivo é impedir que ameaças digitais (inimigos) cheguem ao final do caminho. Se muitas ameaças escaparem, sua "Integridade da Rede" (vidas) chega a zero e o jogo acaba.</p>
-                
-                <h3>O Recurso Mais Importante</h3>
-                <p><strong>Pacotes de Dados</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2ecc71"/></svg> (Verde): Estes são a sua pontuação! Você deve protegê-los. Cada pacote que chega ao fim lhe dá pontos.</p>
+                    <button id="start-wave-btn" disabled>▶ INICIAR ONDA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="main-menu-screen" class="modal-overlay">
+        <div class="modal-box">
+            <h2>Bem-vindo ao Defensor da Rede</h2>
+            <div class="modal-buttons vertical">
+                <button id="menu-play-btn">Jogar</button>
+                <button id="menu-how-to-play-btn">Como Jogar</button>
+            </div>
+            <div class="accessibility-toggle">
+                <label for="accessibility-toggle">Modo Acessibilidade</label>
+                <label class="switch">
+                    <input type="checkbox" id="accessibility-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <small>Ativa controles via teclado e formas distintas para inimigos.</small>
+        </div>
+    </div>
+    
+    <div id="mode-select-screen" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h2>Escolha o Modo de Jogo</h2>
+            <p>Selecione como você quer defender a rede.</p>
+            <div class="modal-buttons">
+                <button id="start-normal">Modo Normal</button>
+                <button id="start-aprendiz">Modo Aprendiz</button>
+            </div>
+            <small>Modo Aprendiz: Inimigos 25% mais lentos e 80 recursos iniciais extras.</small>
+        </div>
+    </div>
+    
+    <div id="how-to-play-screen" class="modal-overlay hidden">
+        <div class="modal-box how-to-play">
+            <h2>Como Jogar</h2>
+            <div class="how-to-play-content">
+                <h3>O Jogo</h3>
+                <p>Seu objetivo é impedir que ameaças digitais (inimigos) cheguem ao final do caminho. Se muitas ameaças escaparem, sua "Integridade da Rede" (vidas) chega a zero e o jogo acaba.</p>
+                
+                <h3>O Recurso Mais Importante</h3>
+                <p><strong>Pacotes de Dados</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2ecc71"/></svg> (Verde): Estes são a sua pontuação! Você deve protegê-los. Cada pacote que chega ao fim lhe dá pontos.</p>
 
-                <h3>As Ameaças (Inimigos)</h3>
-                <p><strong>Vírus</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 2 22, 22 22" fill="#e74c3c"/></svg> (Vermelho): A ameaça padrão. Lento, mas resistente.</p>
-                <p><strong>Worm</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 22 12, 12 22, 2 12" fill="#9b59b6"/></svg> (Roxo): Rápido e em grande número. Causa problemas pela velocidade.</p>
-                <p><strong>Ransomware</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 22 7, 22 17, 12 22, 2 17, 2 7" fill="#34495e"/></svg> (Cinza): Muito lento, mas absurdamente resistente. Causa dano massivo à sua integridade se escapar.</p>
-                <p><strong>Corruptor</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 15 9, 22 12, 15 15, 12 22, 9 15, 2 12, 9 9" fill="#f1c40f"/></svg> (Amarelo): Ameaça estratégica. Ele se move lentamente enquanto atira nos seus Pacotes de Dados. Elimine-o rápido!</p>
+                <h3>As Ameaças (Inimigos)</h3>
+                <p><strong>Vírus</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 2 22, 22 22" fill="#e74c3c"/></svg> (Vermelho): A ameaça padrão. Lento, mas resistente.</p>
+                <p><strong>Worm</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 22 12, 12 22, 2 12" fill="#9b59b6"/></svg> (Roxo): Rápido e em grande número. Causa problemas pela velocidade.</p>
+                <p><strong>Ransomware</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 22 7, 22 17, 12 22, 2 17, 2 7" fill="#34495e"/></svg> (Cinza): Muito lento, mas absurdamente resistente. Causa dano massivo à sua integridade se escapar.</p>
+                <p><strong>Corruptor</strong> <svg class="enemy-shape" viewBox="0 0 24 24"><polygon points="12 2, 15 9, 22 12, 15 15, 12 22, 9 15, 2 12, 9 9" fill="#f1c40f"/></svg> (Amarelo): Ameaça estratégica. Ele se move lentamente enquanto atira nos seus Pacotes de Dados. Elimine-o rápido!</p>
 
-                <h3>Seus Equipamentos (Torres)</h3>
-                <p><strong>Firewall 🛡️:</strong> Sua principal torre de dano. Dispara projéteis em todas as ameaças.</p>
-                <p><strong>Roteador ⚡:</strong> Não ataca. Acelera seus Pacotes de Dados.</p>
-                <p><strong>Antivírus ❄️:</strong> Não causa dano. Desacelera todas as ameaças em sua área.</p>
-                <p><strong>Criptografador 🔒:</strong> Concede um escudo temporário aos Pacotes de Dados que bloqueia um tiro de um Corruptor.</p>
-                
-                <h3>Controles de Acessibilidade (Opcional)</h3>
-                <p>Ative o "Modo Acessibilidade" no menu principal para usar os seguintes comandos (além de ativar as formas dos inimigos):</p>
-                <ul>
-                    <li><strong>Teclas 1-4:</strong> Selecionam as torres.</li>
-                    <li><strong>Setas / W, A, S, D:</strong> Movem a mira de construção.</li>
-                    <li><strong>Enter / Espaço:</strong> Constrói a torre.</li>
-                    <li><strong>P:</strong> Pausa / Retoma o jogo.</li>
-                </ul>
-            </div>
-            <button id="how-to-play-close-btn">Fechar</button>
-        </div>
-    </div>
+                <h3>Seus Equipamentos (Torres)</h3>
+                <p><strong>Firewall 🛡️:</strong> Sua principal torre de dano. Dispara projéteis em todas as ameaças.</p>
+                <p><strong>Roteador ⚡:</strong> Não ataca. Acelera seus Pacotes de Dados.</p>
+                <p><strong>Antivírus ❄️:</strong> Não causa dano. Desacelera todas as ameaças em sua área.</p>
+                <p><strong>Criptografador 🔒:</strong> Concede um escudo temporário aos Pacotes de Dados que bloqueia um tiro de um Corruptor.</p>
+                
+                <h3>Controles de Acessibilidade (Opcional)</h3>
+                <p>Ative o "Modo Acessibilidade" no menu principal para usar os seguintes comandos (além de ativar as formas dos inimigos):</p>
+                <ul>
+                    <li><strong>Teclas 1-4:</strong> Selecionam as torres.</li>
+                    <li><strong>Setas / W, A, S, D:</strong> Movem a mira de construção.</li>
+                    <li><strong>Enter / Espaço:</strong> Constrói a torre.</li>
+                    <li><strong>P:</strong> Pausa / Retoma o jogo.</li>
+                </ul>
+            </div>
+            <button id="how-to-play-close-btn">Fechar</button>
+        </div>
+    </div>
 
-    <div id="game-over-screen" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h2 id="game-over-title">Fim de Jogo</h2>
-            <p id="game-over-message">Os vírus sobrecarregaram a rede.</p>
-            <button id="restart-btn">Jogar Novamente</button>
-        </div>
-    </div>
-    
-    <div id="tower-context-menu" class="hidden">
-        <button id="context-close-btn">X</button>
-        <h3>Torre Nv. <span id="context-level">1</span></h3>
-        <button id="context-upgrade-btn">Melhorar (Custo: 80)</button>
-        <button id="context-sell-btn">Vender (Ganho: 28)</button>
-    </div>
+    <div id="game-over-screen" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h2 id="game-over-title">Fim de Jogo</h2>
+            <p id="game-over-message">Os vírus sobrecarregaram a rede.</p>
+            <button id="restart-btn">Jogar Novamente</button>
+        </div>
+    </div>
+    
+    <div id="tower-context-menu" class="hidden">
+        <button id="context-close-btn">X</button>
+        <h3>Torre Nv. <span id="context-level">1</span></h3>
+        <button id="context-upgrade-btn">Melhorar (Custo: 80)</button>
+        <button id="context-sell-btn">Vender (Ganho: 28)</button>
+    </div>
 
-    <audio id="sound-place" src="https://cdn.freesound.org/previews/266164/266164_4945417-lq.mp3" preload="auto"></audio>
-    <audio id="sound-shoot" src="https://cdn.freesound.org/previews/514244/514244_11157384-lq.mp3" preload="auto"></audio>
-    <audio id="sound-hit" src="https://www.myinstants.com/media/sounds/hitmarker_2.mp3" preload="auto"></audio>
-    <audio id="sound-gameover" src="https://cdn.freesound.org/previews/277403/277403_5123851-lq.mp3" preload="auto"></audio>
-    <audio id="sound-corrupt" src="https://cdn.freesound.org/previews/418529/418529_8254238-lq.mp3" preload="auto"></audio>
+    <audio id="sound-place" src="https://cdn.freesound.org/previews/266164/266164_4945417-lq.mp3" preload="auto"></audio>
+    <audio id="sound-shoot" src="https://cdn.freesound.org/previews/514244/514244_11157384-lq.mp3" preload="auto"></audio>
+    <audio id="sound-hit" src="https://www.myinstants.com/media/sounds/hitmarker_2.mp3" preload="auto"></audio>
+    <audio id="sound-gameover" src="https://cdn.freesound.org/previews/277403/277403_5123851-lq.mp3" preload="auto"></audio>
+    <audio id="sound-corrupt" src="https://cdn.freesound.org/previews/418529/418529_8254238-lq.mp3" preload="auto"></audio>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
