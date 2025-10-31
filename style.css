@@ -3,9 +3,11 @@
 :root {
     --primary-color: #00e5ff; /* Ciano Neon */
     --secondary-color: #ff00ff; /* Magenta Neon */
+    --warning-color: #f1c40f; /* Amarelo */
     --dark-bg: #0d0c1d;
-    --panel-bg: #161530; /* Um pouco mais sólido */
+    --panel-bg: #161530;
     --border-color: rgba(0, 229, 255, 0.5);
+    --tooltip-bg: rgba(26, 25, 50, 0.95);
 }
 
 body {
@@ -19,6 +21,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 #game-wrapper {
@@ -27,22 +30,23 @@ body {
     align-items: center;
 }
 
+h1 {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+    margin-bottom: 20px;
+}
+
 #game-container {
     display: flex;
     border: 2px solid var(--primary-color);
     box-shadow: 0 0 20px var(--primary-color);
     background-color: black;
+    position: relative;
 }
 
 #gameCanvas {
     background-color: #16213e;
     display: block;
-}
-
-h1 {
-    color: var(--primary-color);
-    text-shadow: 0 0 10px var(--primary-color);
-    margin-bottom: 20px;
 }
 
 #ui-panel {
@@ -54,6 +58,7 @@ h1 {
     justify-content: space-between;
     padding: 20px;
     box-sizing: border-box;
+    position: relative;
 }
 
 #stats-bar {
@@ -74,6 +79,12 @@ h1 {
 }
 .stat-item p { margin: 0; font-size: 1.2em; font-weight: bold; }
 
+#tower-shop {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 #tower-shop h4 { color: var(--primary-color); margin-bottom: 15px; }
 #tower-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .tower-button {
@@ -81,6 +92,7 @@ h1 {
     border: 2px solid var(--border-color); border-radius: 8px;
     font-size: 1em; cursor: pointer; transition: all 0.2s ease;
     color: #e0e0e0; font-family: inherit;
+    position: relative;
 }
 .tower-button:hover { background-color: var(--primary-color); color: black; transform: scale(1.05); }
 .tower-button.selected {
@@ -88,17 +100,68 @@ h1 {
     background-color: var(--secondary-color); color: black; transform: scale(1.05);
 }
 
-#action-panel { border-top: 1px solid var(--border-color); padding-top: 15px; }
-#upgrade-panel { text-align: center; margin-bottom: 15px; }
-#upgrade-panel h3 { margin-top: 0; color: var(--primary-color); }
-#upgrade-panel p { margin: 0 0 10px 0; }
-#upgrade-btn, #start-wave-btn, #restart-btn, .modal-buttons button {
+#custom-tooltips-container {
+    position: absolute;
+    left: -300px;
+    top: 0;
+    width: 280px;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.custom-tooltip {
+    background-color: var(--tooltip-bg);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    color: #e0e0e0;
+    font-size: 0.9em;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 260px;
+    box-sizing: border-box;
+    display: none;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+.custom-tooltip h4 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+.custom-tooltip p {
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.custom-tooltip .tooltip-cost {
+    color: var(--warning-color); /* Amarelo */
+    font-weight: bold;
+}
+.custom-tooltip .tooltip-stats {
+    color: var(--primary-color); /* Ciano */
+    font-weight: bold;
+}
+
+#action-panel { 
+    border-top: 1px solid var(--border-color); 
+    padding-top: 15px; 
+}
+
+#upgrade-btn, #start-wave-btn, #restart-btn, .modal-buttons button, #how-to-play-close-btn, #pause-btn, #back-to-menu-btn {
     width: 100%; padding: 12px; background-color: transparent;
     border: 2px solid var(--primary-color); color: var(--primary-color);
     font-family: inherit; font-size: 1.1em; font-weight: bold;
     cursor: pointer; transition: all 0.3s ease;
+    margin-top: 10px;
 }
-#upgrade-btn:hover, #start-wave-btn:hover, #restart-btn:hover, .modal-buttons button:hover {
+#upgrade-btn:hover, #start-wave-btn:hover, #restart-btn:hover, .modal-buttons button:hover, #how-to-play-close-btn:hover, #pause-btn:hover {
     background-color: var(--primary-color); color: var(--dark-bg);
     box-shadow: 0 0 15px var(--primary-color);
 }
@@ -106,19 +169,50 @@ h1 {
     border-color: #555; color: #555; cursor: not-allowed;
     background-color: transparent; box-shadow: none;
 }
-
-#speed-controls { display: flex; gap: 5px; margin-bottom: 10px; }
+#speed-controls { 
+    display: flex; 
+    gap: 5px; 
+    margin-bottom: 10px; 
+    justify-content: space-around;
+}
 .speed-button {
     flex-grow: 1; padding: 8px; font-family: inherit; font-size: 0.9em;
-    background-color: transparent; border: 1px solid var(--border-color);
-    color: var(--border-color); cursor: pointer; transition: all 0.2s;
+    background-color: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);
+    color: var(--primary-color); cursor: pointer; transition: all 0.2s;
+    border-radius: 5px;
 }
-.speed-button.active { background-color: var(--primary-color); color: var(--dark-bg); font-weight: bold; }
+.speed-button:hover {
+    background-color: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+.speed-button.active { 
+    background-color: var(--primary-color); color: var(--dark-bg); 
+    font-weight: bold; box-shadow: 0 0 10px var(--primary-color);
+}
+
+#pause-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+#pause-controls button {
+    flex-grow: 1;
+    margin-top: 0;
+}
+#back-to-menu-btn {
+    background-color: transparent;
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+#back-to-menu-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-bg);
+    box-shadow: 0 0 15px var(--secondary-color);
+}
 
 .hidden { display: none !important; }
 
-/* Telas de Início e Fim de Jogo */
-#start-screen, #game-over-screen {
+.modal-overlay {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.85);
@@ -128,11 +222,158 @@ h1 {
 .modal-box {
     background-color: var(--panel-bg);
     border: 2px solid var(--primary-color);
-    box-shadow: 0 0 20px var(--primary-color);
+    box-shadow: 0 0 25px var(--primary-color);
     padding: 40px; text-align: center;
-    max-width: 400px;
+    max-width: 500px;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
-.modal-box h2 { color: var(--primary-color); }
-.modal-box p { margin-bottom: 30px; }
-.modal-box small { margin-top: 20px; display: block; opacity: 0.7; }
-.modal-buttons { display: flex; gap: 15px; }
+.modal-box h2 { 
+    color: var(--primary-color); 
+    text-shadow: 0 0 10px var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.modal-box p { margin-bottom: 30px; font-size: 1.1em; }
+.modal-box small { margin-top: 20px; display: block; opacity: 0.7; font-size: 0.85em; }
+.modal-buttons { display: flex; gap: 15px; margin-top: 20px; justify-content: center; }
+.modal-buttons.vertical { flex-direction: column; gap: 10px; }
+.modal-buttons button { flex-grow: 1; margin-top: 0; }
+
+.modal-box.how-to-play {
+    max-width: 700px;
+    text-align: left;
+}
+.how-to-play-content {
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 20px;
+    text-align: left;
+}
+.how-to-play-content h3 { color: var(--primary-color); margin-top: 20px; }
+.how-to-play-content p { font-size: 1em; line-height: 1.6; }
+.how-to-play-content ul { padding-left: 20px; }
+.how-to-play-content li { margin-bottom: 10px; }
+.enemy-shape {
+    width: 18px;
+    height: 18px;
+    vertical-align: bottom;
+    margin: 0 3px 0 5px;
+}
+
+.accessibility-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    margin-top: 25px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+.accessibility-toggle label {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--primary-color); }
+input:checked + .slider:before { transform: translateX(26px); }
+
+#tower-context-menu {
+    position: absolute;
+    width: 200px;
+    background-color: var(--panel-bg);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-sizing: border-box;
+    z-index: 100;
+    text-align: center;
+}
+#tower-context-menu h3 {
+    color: var(--primary-color);
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+#context-upgrade-btn, #context-sell-btn {
+    width: 100%;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid;
+    transition: all 0.2s ease;
+    margin-bottom: 10px;
+}
+#context-upgrade-btn {
+    background-color: transparent;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+#context-upgrade-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+}
+#context-upgrade-btn:disabled {
+    border-color: #555;
+    color: #555;
+    background-color: transparent;
+    cursor: not-allowed;
+}
+#context-sell-btn {
+    background-color: transparent;
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+#context-sell-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-bg);
+}
+#context-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: 1px solid #888;
+    color: #888;
+    border-radius: 50%;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+}
+#context-close-btn:hover {
+    background-color: #555;
+    color: white;
+}
