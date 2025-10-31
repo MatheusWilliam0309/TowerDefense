@@ -46,6 +46,8 @@ const contextSellBtn = document.getElementById('context-sell-btn');
 
 // Configurações do Jogo
 const TOWER_COSTS = { Firewall: 40, Router: 30, Antivirus: 50, Criptografador: 60 };
+// Adicionada constante TOWER_RANGES para melhor organização
+const TOWER_RANGES = { Firewall: 120, Router: 90, Antivirus: 100, Criptografador: 110 };
 const UPGRADE_COST_BASE = 80;
 const SELL_PERCENTAGE = 0.7; // Vende por 70% do valor investido
 const NEXT_WAVE_TIMER = 15;
@@ -224,26 +226,26 @@ class Tower {
 }
 
 class Firewall extends Tower {
-    constructor(x, y) { super(x, y, 120, TOWER_COSTS.Firewall); this.attackSpeed = 60; this.damage = 10; }
+    constructor(x, y) { super(x, y, TOWER_RANGES.Firewall, TOWER_COSTS.Firewall); this.attackSpeed = 60; this.damage = 10; }
     draw() { ctx.fillStyle = '#f39c12'; ctx.fillRect(this.x - 15, this.y - 15, 30, 30); ctx.fillStyle = '#e67e22'; ctx.fillRect(this.x - 10, this.y - 10, 20, 20); }
     upgrade() { if (super.upgrade()) { this.damage += 5; this.attackSpeed = Math.max(20, this.attackSpeed - 5); } }
     update() { super.update(); if (gameState.isPaused) return; const target = gameState.entities.find(e => !(e instanceof Packet) && Math.hypot(this.x - e.x, this.y - e.y) <= this.range); if (target && this.cooldown <= 0) { gameState.projectiles.push(new Projectile(this.x, this.y, target, this.damage)); this.cooldown = this.attackSpeed; playSound('shoot'); } }
 }
 
 class Router extends Tower {
-    constructor(x, y) { super(x, y, 90, TOWER_COSTS.Router); }
+    constructor(x, y) { super(x, y, TOWER_RANGES.Router, TOWER_COSTS.Router); }
     draw() { ctx.fillStyle = '#3498db'; ctx.beginPath(); ctx.arc(this.x, this.y, 18, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#2980b9'; ctx.beginPath(); ctx.arc(this.x, this.y, 12, 0, Math.PI * 2); ctx.fill(); }
     update() { super.update(); if (gameState.isPaused) return; gameState.entities.forEach(e => { if (e instanceof Packet && Math.hypot(this.x - e.x, this.y - e.y) <= this.range) { e.effects.speedBoost = { multiplier: 1.5, duration: 10 }; ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(e.x, e.y); ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)'; ctx.stroke(); } }); }
 }
 
 class Antivirus extends Tower {
-    constructor(x, y) { super(x, y, 100, TOWER_COSTS.Antivirus); }
+    constructor(x, y) { super(x, y, TOWER_RANGES.Antivirus, TOWER_COSTS.Antivirus); }
     draw() { ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.arc(this.x, this.y, 18, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#c0392b'; ctx.beginPath(); ctx.arc(this.x, this.y, 12, 0, Math.PI * 2); ctx.fill(); }
     update() { super.update(); if (gameState.isPaused) return; gameState.entities.forEach(e => { if (!(e instanceof Packet) && Math.hypot(this.x - e.x, this.y - e.y) <= this.range) { e.effects.slow = { multiplier: 0.6, duration: 10 }; } }); }
 }
 
 class Criptografador extends Tower {
-    constructor(x,y) { super(x, y, 110, TOWER_COSTS.Criptografador); }
+    constructor(x,y) { super(x, y, TOWER_RANGES.Criptografador, TOWER_COSTS.Criptografador); }
     draw() { ctx.fillStyle = '#bdc3c7'; ctx.fillRect(this.x - 15, this.y - 15, 30, 30); ctx.fillStyle = '#95a5a6'; ctx.fillRect(this.x - 10, this.y - 10, 20, 20); }
     update() { super.update(); if (gameState.isPaused) return; gameState.entities.forEach(e => { if (e instanceof Packet && Math.hypot(this.x - e.x, this.y - e.y) <= this.range) { e.effects.shielded = { duration: 10 }; } }); }
 }
@@ -257,7 +259,7 @@ class Projectile {
 class CorruptingProjectile {
     constructor(x, y, target) { this.x = x; this.y = y; this.target = target; this.baseSpeed = 4; this.damage = 10; }
     update() { const dx = this.target.x - this.x; const dy = this.target.y - this.y; const distance = Math.hypot(dx, dy); const speed = this.baseSpeed * gameState.gameSpeed; if (distance < speed || this.target.health <= 0) { if (this.target.health > 0) { this.target.effects.isHit = { duration: 5 }; if (!this.target.effects.shielded) { this.target.health -= this.damage; playSound('corrupt'); } else { delete this.target.effects.shielded; } } return true; } this.x += (dx / distance) * speed; this.y += (dy / distance) * speed; this.draw(); return false; }
-    draw() { ctx.fillStyle = 'magenta'; ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, Math.PI * 2); ctx.fill(); }
+   draw() { ctx.fillStyle = 'magenta'; ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, Math.PI * 2); ctx.fill(); }
 }
 
 class FloatingText {
@@ -360,7 +362,7 @@ function handleUpgradeClick() {
         contextLevel.textContent = tower.level;
         const upgradeCost = tower.getUpgradeCost();
         contextUpgradeBtn.textContent = `Melhorar (Custo: ${upgradeCost})`;
-        contextUpgradeBtn.disabled = gameState.resources < upgradeCost;
+        contextUpgradeBtn.disabled = gameState.resources < upgradeCost;
         const sellPrice = tower.getSellPrice();
         contextSellBtn.textContent = `Vender (Ganho: ${sellPrice})`;
     } else {
@@ -394,7 +396,7 @@ function startNextWaveCountdown() { let countdown = NEXT_WAVE_TIMER; startWaveBt
 function handleWaveCompletion() { const packetsThisWave = gameState.score - gameState.scoreAtWaveStart; const bonusResources = (packetsThisWave * 2) + gameState.lives; if (bonusResources > 0) { gameState.resources += bonusResources; gameState.floatingTexts.push(new FloatingText(`+${bonusResources} Recursos!`, canvas.width / 2 - 100, canvas.height / 2)); } gameState.waveInProgress = false; gameState.wave++; startNextWaveCountdown(); }
 function startWave() { if (gameState.nextWaveInterval) { clearInterval(gameState.nextWaveInterval); gameState.nextWaveInterval = null; } gameState.scoreAtWaveStart = gameState.score; const levelConf = LEVELS[gameState.level]; if (gameState.wave > levelConf.waves.length) { if (gameState.level < Object.keys(LEVELS).length) { gameState.level++; gameState.wave = 1; currentPath = LEVELS[gameState.level].path; gameState.towers = []; alert(`Nível ${gameState.level}! Prepare-se para um novo desafio.`); } else { gameState.gameWon = true; return; } } gameState.waveInProgress = true; startWaveBtn.textContent = 'EM ANDAMENTO...'; startWaveBtn.disabled = true; const waveConfig = levelConf.waves[gameState.wave - 1]; let toSpawn = []; for(let i=0; i<waveConfig.packet; i++) toSpawn.push('Packet'); for(let i=0; i<waveConfig.virus; i++) toSpawn.push('Virus'); for(let i=0; i<waveConfig.worm; i++) toSpawn.push('Worm'); for(let i=0; i<waveConfig.ransomware; i++) toSpawn.push('Ransomware'); for(let i=0; i<waveConfig.corruptor; i++) toSpawn.push('Corruptor'); toSpawn = toSpawn.sort(() => Math.random() - 0.5); let spawnIndex = 0; const spawnInterval = setInterval(() => { if (!gameState.isPaused) { if (spawnIndex < toSpawn.length) { const type = toSpawn[spawnIndex]; if (type === 'Packet') gameState.entities.push(new Packet()); else if (type === 'Virus') gameState.entities.push(new Virus()); else if (type === 'Worm') gameState.entities.push(new Worm()); else if (type === 'Ransomware') gameState.entities.push(new Ransomware()); else if (type === 'Corruptor') gameState.entities.push(new Corruptor()); spawnIndex++; } else { clearInterval(spawnInterval); const checkWaveEnd = setInterval(() => { if (gameState.entities.length === 0 && !gameState.gameOver) { clearInterval(checkWaveEnd); handleWaveCompletion(); } }, 1000 / gameState.gameSpeed); } } }, 700 / gameState.gameSpeed); }
 function checkGameOver() { if (gameState.lives <= 0 && !gameState.gameOver) { gameState.gameOver = true; hideTowerContextMenu(); gameOverTitle.textContent = "Fim de Jogo"; gameOverMsg.textContent = "Os vírus sobrecarregaram a rede. Tente novamente!"; gameOverScreen.classList.remove('hidden'); playSound('gameover'); } if (gameState.gameWon && gameState.entities.length === 0 && !gameState.gameOver) { gameState.gameOver = true; hideTowerContextMenu(); gameOverTitle.textContent = "Vitória!"; gameOverMsg.textContent = `Você defendeu a rede com sucesso! Pontuação Final: ${gameState.score}`; gameOverScreen.classList.remove('hidden'); } }
-function drawKeyCursor() { if (gameState.isAccessibilityMode && gameState.selectedTowerType) { const x = gameState.keyCursor.x; const y = gameState.keyCursor.y; ctx.strokeStyle = 'yellow'; ctx.lineWidth = 3; ctx.strokeRect(x - 15, y - 15, 30, 30); const range = {Firewall: 120, Router: 90, Antivirus: 100, Criptografador: 110}[gameState.selectedTowerType]; ctx.beginPath(); ctx.arc(x, y, range, 0, Math.PI * 2); const onPath = isLocationOnPath(x, y); const onTower = gameState.towers.some(t => Math.hypot(x - t.x, y - t.y) < TOWER_PLACEMENT_RADIUS); ctx.fillStyle = (onPath || onTower) ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 255, 255, 0.2)'; ctx.fill(); } }
+function drawKeyCursor() { if (gameState.isAccessibilityMode && gameState.selectedTowerType) { const x = gameState.keyCursor.x; const y = gameState.keyCursor.y; ctx.strokeStyle = 'yellow'; ctx.lineWidth = 3; ctx.strokeRect(x - 15, y - 15, 30, 30); const range = TOWER_RANGES[gameState.selectedTowerType]; ctx.beginPath(); ctx.arc(x, y, range, 0, Math.PI * 2); const onPath = isLocationOnPath(x, y); const onTower = gameState.towers.some(t => Math.hypot(x - t.x, y - t.y) < TOWER_PLACEMENT_RADIUS); ctx.fillStyle = (onPath || onTower) ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 255, 255, 0.2)'; ctx.fill(); } }
 function drawLowHealthWarning() { if (gameState.lives > 0 && gameState.lives <= 5) { if (Date.now() % 1000 < 500) { ctx.save(); ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)'; ctx.lineWidth = 10; ctx.strokeRect(0, 0, canvas.width, canvas.height); ctx.restore(); } } }
 function togglePause(pauseState) { if (!gameState || gameState.gameOver) return; gameState.isPaused = pauseState; if (gameState.isPaused) { pauseBtn.textContent = "RETOMAR (P)"; backToMenuBtn.classList.remove('hidden'); hideTowerContextMenu(); } else { pauseBtn.textContent = "PAUSAR (P)"; backToMenuBtn.classList.add('hidden'); } }
 function drawPauseScreen() { if (gameState.isPaused) { ctx.save(); ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = 'white'; ctx.font = 'bold 60px Roboto Mono'; ctx.textAlign = 'center'; ctx.fillText('PAUSADO', canvas.width / 2, canvas.height / 2); ctx.font = '20px Roboto Mono'; ctx.fillText('Pressione (P) para retomar', canvas.width / 2, (canvas.height / 2) + 40); ctx.restore(); } }
@@ -423,26 +425,34 @@ function gameLoop() {
     handleEntities();
     for (let i = gameState.floatingTexts.length - 1; i >= 0; i--) { const text = gameState.floatingTexts[i]; text.update(); text.draw(); if (text.duration <= 0) gameState.floatingTexts.splice(i, 1); }
     
-    // CORREÇÃO: Preview de alcance do mouse agora é desenhado sempre
+    // =======================================================
+    // !! INÍCIO DA CORREÇÃO DO PREVIEW DE ALCANCE !!
+    // =======================================================
     if (gameState.selectedTowerType) { 
-        // 1. Desenha o preview do MOUSE
+        // 1. Pega os dados do preview (Mouse)
         const mouseX = gameState.mouse.x;
         const mouseY = gameState.mouse.y;
-        const cost = TOWER_COSTS[gameState.selectedTowerType]; 
-        const range = {Firewall: 120, Router: 90, Antivirus: 100, Criptografador: 110}[gameState.selectedTowerType]; 
+        const range = TOWER_RANGES[gameState.selectedTowerType]; 
         
-        ctx.beginPath(); 
-        ctx.arc(mouseX, mouseY, range, 0, Math.PI * 2); 
-        
+        // 2. Faz as VERIFICAÇÕES LÓGICAS primeiro
         const onPath = isLocationOnPath(mouseX, mouseY);
         const onTower = gameState.towers.some(t => Math.hypot(mouseX - t.x, mouseY - t.y) < TOWER_PLACEMENT_RADIUS);
         
-        ctx.fillStyle = (onPath || onTower) ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 255, 255, 0.2)';
+        // 3. Define a cor baseada nas verificações
+        const previewColor = (onPath || onTower) ? 'rgba(255, 0, 0, 0.2)' : 'rgba(0, 255, 255, 0.2)';
+        
+        // 4. Agora, DESENHA o preview do mouse com segurança
+        ctx.fillStyle = previewColor;
+        ctx.beginPath(); 
+        ctx.arc(mouseX, mouseY, range, 0, Math.PI * 2); 
         ctx.fill(); 
         
-        // 2. Desenha o preview do TECLADO (KeyCursor) por cima se o modo de acessibilidade estiver ativo
+        // 5. Desenha o preview do TECLADO (KeyCursor) por cima se o modo de acessibilidade estiver ativo
         drawKeyCursor(); 
     }
+    // =======================================================
+    // !! FIM DA CORREÇÃO DO PREVIEW DE ALCANCE !!
+    // =======================================================
     
     drawLowHealthWarning();
     updateUI(); checkGameOver();
@@ -463,7 +473,7 @@ function startGame(mode) {
     modeSelectScreen.classList.add('hidden');
     const isAccessible = accessibilityToggle.checked;
     setupInitialState(mode, isAccessible);
-    startWaveBtn.disabled = false; // <-- A CORREÇÃO ESTÁ AQUI
+    startWaveBtn.disabled = false; // <-- Habilita o botão
     updateUI(); // Garante que a UI inicial seja exibida
 }
 
@@ -534,24 +544,18 @@ canvas.addEventListener('click', (e) => {
             } 
         }
         if (!towerClicked) {
-            hideTowerContextMenu();
+Note:           hideTowerContextMenu();
         }
     } 
 });
 
-// =======================================================
-// !! CORREÇÃO DEFINITIVA ADICIONADA AQUI !!
-// =======================================================
-// Listener do Botão de Iniciar Onda
+// Listener do Botão de Iniciar Onda (Adicionado na correção anterior)
 startWaveBtn.addEventListener('click', () => {
     // Só inicia a onda se o jogo estiver rodando e não houver uma onda em progresso
     if (gameState && !gameState.waveInProgress) {
         startWave();
     }
 });
-// =======================================================
-// !! FIM DA CORREÇÃO !!
-// =======================================================
 
 
 // Listener do Botão de Reiniciar
@@ -573,7 +577,7 @@ pauseBtn.addEventListener('click', () => {
     togglePause(!gameState.isPaused);
 });
 backToMenuBtn.addEventListener('click', () => {
-    togglePause(false); 
+    togglePause(false); 
     hideTowerContextMenu();
     if (gameState.nextWaveInterval) clearInterval(gameState.nextWaveInterval); 
     gameState = null; 
@@ -619,7 +623,7 @@ window.addEventListener('keydown', (e) => {
             } 
         } 
         if (gameState.selectedTowerType) { 
-            const key = e.key.toLowerCase();
+           const key = e.key.toLowerCase();
             switch (key) { 
                 case 'arrowup': case 'w':
                     e.preventDefault();
@@ -634,7 +638,7 @@ window.addEventListener('keydown', (e) => {
                     gameState.keyCursor.x = Math.max(0, gameState.keyCursor.x - gameState.keyCursor.speed); 
                     break; 
                 case 'arrowright': case 'd':
-                    e.preventDefault();
+                     e.preventDefault();
                     gameState.keyCursor.x = Math.min(canvas.width, gameState.keyCursor.x + gameState.keyCursor.speed); 
                     break; 
                 case 'enter': case ' ':
